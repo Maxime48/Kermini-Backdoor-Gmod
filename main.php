@@ -1,12 +1,45 @@
 <?php
-
-	// SourceQuery
+session_start();
+// Change this to your connection info.
+$DB_HOST = '';
+$DB_USER = '';
+$DB_PASS = '';
+$DB_NAME = '';
+// Try and connect using the info above.
+$con = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+if ( mysqli_connect_errno() ) {
+	// If there is an error with the connection, stop the script and display the error.
+	die ('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+// Now we check if the data was submitted, isset will check if the data exists.
+if ( !isset($_POST['username'], $_POST['password']) ) {
+	// Could not get the data that should have been sent.
+	die ('Username and/or password does not exist! :) ');
+}
+// Prepare our SQL 
+if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+			echo 'Welcome  :  ' . $_SESSION['name'] . '  !';
+				// SourceQuery
 	require( __DIR__ . '/SourceQuery/SourceQuery.class.php');
 	// Database Settings
-	$Database_Host 		= "sql.mtxserv.com";
-	$Database_Database 	= "157071_sql";
-	$Database_Username 	= "w_157071";
-	$Database_Password	= "Ps0820max";
+	$Database_Host 		= "";
+	$Database_Database 	= "";
+	$Database_Username 	= "";
+	$Database_Password	= "";
 	
 	// Page Settings
 	$Title		= "Panel";
@@ -45,7 +78,51 @@
 	elseif($Color=="Green"){$PColor="success";}elseif($Color=="Sky"){$PColor="info";}
 	elseif($Color=="Orange"){$PColor="warning";}elseif($Color=="Red"){$PColor="danger";}
 	elseif($Color=="Dark"){$PColor="dark";}
+
+		} else {
+			echo 'Incorrect  username  and/or  password!';
+	// Page Settings
+	$Title		= "UNCONNECTED";
+	$Color		= "Dark"; // White, Blue, Green, Sky, Orange, Red, Dark
 	
+	$PageTitle	= "UNCONNECTED";
+	
+	// Language
+	$T_ServerList = "UNCONNECTED";
+	$T_BanList = "UNCONNECTED";
+	
+	$S_IP = "UNCONNECTED";
+	$S_ServerName = "UNCONNECTED";
+	$S_Gamemode = "UNCONNECTED";
+	$S_Map = "UNCONNECTED";
+	$S_Players = "UNCONNECTED";
+	$S_Update = "UNCONNECTED";
+	$S_First = "UNCONNECTED";	
+		}
+	} else {
+		echo 'Incorrect  username  and/or  password!';
+	// Page Settings
+	$Title		= "UNCONNECTED";
+	$Color		= "Dark"; // White, Blue, Green, Sky, Orange, Red, Dark
+	
+	$PageTitle	= "UNCONNECTED";
+	
+	// Language
+	$T_ServerList = "UNCONNECTED";
+	$T_BanList = "UNCONNECTED";
+	
+	$S_IP = "UNCONNECTED";
+	$S_ServerName = "UNCONNECTED";
+	$S_Gamemode = "UNCONNECTED";
+	$S_Map = "UNCONNECTED";
+	$S_Players = "UNCONNECTED";
+	$S_Update = "UNCONNECTED";
+	$S_First = "UNCONNECTED";
+	}
+	$stmt->close();
+} else {
+	echo 'Could  not  prepare  statement!';
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,6 +167,11 @@
                 <th><?php echo $S_Players; ?></th>
 				<th><?php echo $S_Update; ?></th>
 				<th><?php echo $S_First; ?></th>
+				<div style="position: fixed; z-index: -99; width: 100%; height: 100%">
+    <iframe frameborder="0" height="0%" width="0%" 
+    src="https://youtube.com/embed/YKqDiNJJPXk?autoplay=1&controls=0&showinfo=0&autohide=0&loop=1"> <!-- modify your song here replace YKqDiNJJPXk by the video id -->
+    </iframe>
+    </div>
               </tr>
             </thead>
             <tbody>

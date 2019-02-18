@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  jeu. 14 fév. 2019 à 14:39
+-- Généré le :  lun. 18 fév. 2019 à 23:17
 -- Version du serveur :  10.1.37-MariaDB-0+deb9u1
 -- Version de PHP :  5.6.37-0+deb8u1
 
@@ -19,10 +19,24 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `157071_sql`
+-- Base de données :  `161810_sql`
 --
+CREATE DATABASE IF NOT EXISTS `161810_sql` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `161810_sql`;
 
 -- --------------------------------------------------------
+
+--
+-- Structure de la table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Structure de la table `servers`
@@ -36,7 +50,6 @@ CREATE TABLE `servers` (
   `Players` varchar(255) NOT NULL,
   `LastUpdate` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 --
 -- Index pour les tables déchargées
