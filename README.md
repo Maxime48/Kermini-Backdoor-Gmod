@@ -11,6 +11,8 @@ open class/Config.php and change Database settings
 
 open install folder and change Database settings
 
+open phpMyAdmin and execute Kermini-s-q-l.sql 
+
 open www.[DOMAIN].com/install and create an account |Delete this folder after this step
 
 Here you go ! Enjoy
