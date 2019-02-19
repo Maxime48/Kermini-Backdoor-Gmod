@@ -18,13 +18,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données :  `161810_sql`
---
-CREATE DATABASE IF NOT EXISTS `161810_sql` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `161810_sql`;
-
--- --------------------------------------------------------
 
 --
 -- Structure de la table `accounts`
