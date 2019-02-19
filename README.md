@@ -6,7 +6,9 @@ backdoor.lua : The file that contain the code to infect servers |Can sometimes s
 # Installation Process | Files
 
 open main.php and change Database settings and the others options if you want
+
 open class/Config.php and change Database settings
+
 open install folder and change Database settings
 
 open www.[DOMAIN].com/install and create an account |Delete this folder after this step
