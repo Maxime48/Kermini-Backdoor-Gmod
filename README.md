@@ -9,6 +9,10 @@ open main.php and change Database settings and the others options if you want
 
 open class/Config.php and change Database settings
 
+open deletepayload.php and change Database settings
+
+open send_payload_update.php and change Database settings
+
 open install folder and change Database settings
 
 open phpMyAdmin and execute Kermini-s-q-l.sql 
