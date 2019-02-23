@@ -14,6 +14,11 @@ class Server
 			return false;
 		}
 	}
+		
+	public function GetServerPayload($server_id)
+	{
+		return $GLOBALS['DB']->GetContent("payload", ["ServerID" => $server_id])[0]["execution"];
+	}
 
 	// Récupére le server
 	public function GetServer($server_id)
@@ -37,6 +42,34 @@ class Server
 	public function GetAllServer()
 	{
 		return $GLOBALS['DB']->GetContent("servers");
+	}
+	
+		// Appeler un Payload
+	public function CallPayload($server_id, $payload_id)
+	{
+		$ip = Server::GetServer($server_id)['IPAddress'];
+		$pname = Payload::GetPayload($payload_id)['payloadID'];
+		$GLOBALS['DB']->Update("payload", ["ServerID" => $server_id], ["status" => $payload_id]);
+   }
+
+	// Reset un payload pour un serveur
+	public function ResetPayload($server_id)
+	{
+		$ip = Server::GetServer($server_id)['IPAddress'];
+		$GLOBALS['DB']->Update("payload", ["ServerID" => $server_id], ["execution" => -1]);
+	}
+
+	// Récupéré le statut d'un apelle
+	public function CallStatut($server_id)
+	{
+		if ($GLOBALS['DB']->GetContent("payload", ["ServerID" => $server_id])[0]['status'] == -1)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 ?>

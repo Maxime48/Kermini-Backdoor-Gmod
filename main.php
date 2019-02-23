@@ -58,6 +58,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Players = "Players";
 	$S_Update = "Join Date";
 	$S_First = "First Players";
+	$S_Payload = "Payload";
 	
 	//$B_SteamID = "SteamID";
 	//$B_IGN = "IGN";
@@ -79,6 +80,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	elseif($Color=="Orange"){$PColor="warning";}elseif($Color=="Red"){$PColor="danger";}
 	elseif($Color=="Dark"){$PColor="dark";}
 
+
 		} else {
 			echo 'Incorrect  username  and/or  password!';
 	// Page Settings
@@ -97,7 +99,8 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Map = "UNCONNECTED";
 	$S_Players = "UNCONNECTED";
 	$S_Update = "UNCONNECTED";
-	$S_First = "UNCONNECTED";	
+	$S_First = "UNCONNECTED";
+    $S_Payload = "UNCONNECTED";	
 		}
 	} else {
 		echo 'Incorrect  username  and/or  password!';
@@ -118,6 +121,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Players = "UNCONNECTED";
 	$S_Update = "UNCONNECTED";
 	$S_First = "UNCONNECTED";
+	$S_Payload = "UNCONNECTED";
 	}
 	$stmt->close();
 } else {
@@ -167,7 +171,89 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
                 <th><?php echo $S_Players; ?></th>
 				<th><?php echo $S_Update; ?></th>
 				<th><?php echo $S_First; ?></th>
-				<div style="position: fixed; z-index: -99; width: 100%; height: 100%">
+				<th><?php echo $S_Payload; ?><button onclick="payloadFunction()">Config</button><div id="myDIV"></div></th>
+				<div id="myDIV">
+<script>document.getElementById("myDIV").style.display = "none"; </script>
+	<head>
+	<?php
+	if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+		echo '<meta charset="utf-8">
+		<title>Register</title>
+		<style>
+		.register-form {
+			width: 300px;
+			margin: 0 auto;
+			font-family: Tahoma, Geneva, sans-serif;
+		}
+		.register-form h1 {
+			text-align: center;
+			color: #4d4d4d;
+			font-size: 24px;
+			padding: 20px 0 20px 0;
+		}
+		.register-form input[type="number"],
+		.register-form input[type="text"] {
+			width: 100%;
+			padding: 15px;
+			border: 1px solid #dddddd;
+			margin-bottom: 15px;
+			box-sizing:border-box;
+		}
+		.register-form input[type="submit"] {
+			width: 100%;
+			padding: 15px;
+			background-color: #535b63;
+			border: 0;
+			box-sizing: border-box;
+			cursor: pointer;
+			font-weight: bold;
+			color: #ffffff;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="register-form">
+			<h1>Payload update/creation</h1>
+			<form action="send_payload_update.php" method="post">
+				<input type="number" name="username" placeholder="Server ID" required>
+				<input type="text" name="password" placeholder="Lua code" required>
+				<input type="text" name="email" placeholder="Payload name" required>
+				<input type="submit">
+			</form>
+
+		</div>
+	</body>';
+		     $reponse = $db->query('SELECT description, ServerID FROM payload');             
+             while ($donnees = $reponse->fetch())
+             {
+	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . '</br>';
+             }
+			 echo '<form action="deletepayload.php" method="post">
+		<input type="delete" name="delete" placeholder="Type the name of the payload you want to delete" required size="40">
+		<input type="submit"></form>' . '<br />';
+		}
+	  }
+	}
+	?>
+                </div>
+				
+				
+				
+					<div style="position: fixed; z-index: -99; width: 100%; height: 100%">
     <iframe frameborder="0" height="0%" width="0%" 
     src="https://youtube.com/embed/YKqDiNJJPXk?autoplay=1&controls=0&showinfo=0&autohide=0&loop=1"> <!-- modify your song here replace YKqDiNJJPXk by the video id -->
     </iframe>
