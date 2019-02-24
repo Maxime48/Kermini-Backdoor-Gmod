@@ -237,10 +237,16 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 
 		</div>
 	</body>';
-		     $reponse = $db->query('SELECT description, ServerID FROM payload');             
+		     $reponse = $db->query('SELECT description, ServerID, execution FROM payload');	 
              while ($donnees = $reponse->fetch())
              {
-	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . '</br>';
+			 $snkseb = $donnees['execution'];
+             if ($snkseb == -1) {
+             $mtxapprouve = 'Executed';
+			 } else {
+             $mtxapprouve = 'Not yet';
+             }	
+	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . ' | Status : ' . $mtxapprouve . '</br>';
              }
 			 echo '<form action="deletepayload.php" method="post">
 		<input type="delete" name="delete" placeholder="Type the name of the payload you want to delete" required size="40">
