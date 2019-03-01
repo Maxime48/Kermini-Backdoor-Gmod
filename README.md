@@ -21,6 +21,10 @@ open www.[DOMAIN].com/install and create an account |Delete this folder after th
 
 Here you go ! Enjoy
 
+# Hey i found an exploit related to the panel !
+
+No problem, just contact me and tell me what is going wrong, i will do my best to resolve it.
+
 # SNTE
 https://steamcommunity.com/sharedfiles/filedetails/?id=1308262997
 
@@ -71,4 +75,12 @@ end
 if isSNTE then
     chat.AddText(Color(26, 48, 219), "[KERMINI]", Color(35, 142, 219), " SNTE DETECTED")
 end
+
+# The code is telling me something 
+
+yep i can code in php but im not a pro designer so i used
+- https://github.com/bcool/ULX-Global-Ban/tree/master/WebPage/TCB-Theme-master (For the display)
+- And somthing cold Gbackdoor (I know there is exploits related to this panel, i made a different code for some parts) 
+
+ps : gbackdoor used only for server adding/update | Payload system have been a little bit modified
 
