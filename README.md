@@ -80,7 +80,7 @@ end
 
 yep i can code in php but im not a pro designer so i used
 - https://github.com/bcool/ULX-Global-Ban/tree/master/WebPage/TCB-Theme-master (For the display)
-- And somthing cold Gbackdoor (I know there is exploits related to this panel, i made a different code for some parts) 
+- And somthing called Gbackdoor (I know there is exploits related to this panel, i made a different code for some parts) 
 
 ps : gbackdoor used only for server adding/update | Payload system have been a little bit modified
 
