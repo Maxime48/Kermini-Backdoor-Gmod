@@ -56,7 +56,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$PageTitle	= "KerminiDRM";
 	
 	// Language
-	$T_ServerList = "Kermini Server List";
+	$T_ServerList = "Kermini Server List | Created by Maxime_48";
 	$T_BanList = "_NIL_";
 	
 	$S_IP = "IP";
