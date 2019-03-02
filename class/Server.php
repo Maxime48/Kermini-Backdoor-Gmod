@@ -71,5 +71,10 @@ class Server
 			return false;
 		}
 	}
+	
+	public function LogAddNew($log_what)
+	{ 
+		$GLOBALS['DB']->Insert("logs", ["What" => $log_what]);
+    }
 }
 ?>

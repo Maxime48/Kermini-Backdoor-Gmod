@@ -21,6 +21,7 @@ if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['emai
 	// One or more values are empty...
 	die ('Please complete the payload registration form!<br><a href="index.html">Back</a>');
 }
+
 // We need to check if the account with that username exists
 if ($stmt = $mysqli->prepare('SELECT payloadID , content FROM payload WHERE ServerID  = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
@@ -35,8 +36,14 @@ if ($stmt = $mysqli->prepare('SELECT payloadID , content FROM payload WHERE Serv
 	 $serverid = $_POST['username'];
 	 $content = $_POST['password'];
 	 $description = $_POST['email'];
-     Payload::CreatePayload($serverid, $content, $description);
-	 echo '<meta http-equiv="refresh" content="2; url=index.html" />redirection to login page';
+	 // convert
+	 $log_what1 = ' added : ' . $_POST['email'] . ' | When : ';
+	 $log_what2 = $log_what1 . date("Y-m-d H:i:s");
+	 $log_what = $_SESSION['name'] . $log_what2;
+	 Payload::CreatePayload($serverid, $content, $description);
+	 Server::LogAddNew($log_what);
+     echo '<meta http-equiv="refresh" content="100; url=index.html" />redirection to login page';
+	 echo $log_what;
 	}
 	$stmt->close();
 } else {

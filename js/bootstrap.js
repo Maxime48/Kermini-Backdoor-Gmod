@@ -1828,7 +1828,14 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     x.style.display = "none";
   }
 } 
-
+function LogsDisplay() {
+   var x = document.getElementById("logs");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+} 
 +function ($) {
   'use strict';
 
