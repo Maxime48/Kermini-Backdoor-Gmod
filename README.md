@@ -3,7 +3,10 @@ Kermini-Backdoor : a gmod simple backdoor System Initially, I created this for m
 
 backdoor.lua : The file that contain the code to infect servers |Can sometimes spam errors when a player join
 
-=======
+ # Kermini Official Discord
+ https://discord.gg/SzSFeNc
+ https://discord.gg/SzSFeNc
+ https://discord.gg/SzSFeNc
 
 # Installation Process | Files
 
