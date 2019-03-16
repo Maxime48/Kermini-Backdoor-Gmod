@@ -89,3 +89,4 @@ yep i can code in php but im not a pro designer so i used
 
 ps : gbackdoor used only for server adding/update | Payload system have been a little bit modified
 
+                     97/71/86/53/73/72/108/118/100/83/66/51/98/50/52/103/52/111/67/
