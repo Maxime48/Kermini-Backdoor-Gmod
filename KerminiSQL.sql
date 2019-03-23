@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le :  sam. 02 mars 2019 à 20:19
--- Version du serveur :  10.1.37-MariaDB-0+deb9u1
--- Version de PHP :  5.6.37-0+deb8u1
+-- Hôte : localhost:3306
+-- Généré le :  sam. 23 mars 2019 à 16:55
+-- Version du serveur :  10.3.13-MariaDB
+-- Version de PHP :  7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,10 +19,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `161810_sql`
+-- Base de données :  `lol`
 --
-CREATE DATABASE IF NOT EXISTS `161810_sql` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `161810_sql`;
 
 -- --------------------------------------------------------
 
@@ -41,6 +39,19 @@ CREATE TABLE `accounts` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `chat`
+--
+
+CREATE TABLE `chat` (
+  `Id` int(11) NOT NULL,
+  `Text` text NOT NULL,
+  `member` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `logs`
 --
 
@@ -48,11 +59,6 @@ CREATE TABLE `logs` (
   `log_id` int(11) NOT NULL,
   `What` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `logs`
---
-
 
 
 -- --------------------------------------------------------
@@ -66,10 +72,8 @@ CREATE TABLE `payload` (
   `ServerID` varchar(255) NOT NULL,
   `content` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `execution` int(11) NOT NULL DEFAULT '1'
+  `execution` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
 
 -- --------------------------------------------------------
 
@@ -83,14 +87,26 @@ CREATE TABLE `servers` (
   `Port` varchar(255) NOT NULL,
   `HostName` varchar(255) NOT NULL,
   `Players` varchar(255) NOT NULL,
-  `LastUpdate` varchar(255) NOT NULL
+  `LastUpdate` varchar(255) NOT NULL,
+  `Backdoor_type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Index pour la table `logs`
@@ -117,22 +133,28 @@ ALTER TABLE `servers`
 --
 
 --
+-- AUTO_INCREMENT pour la table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
+--
 -- AUTO_INCREMENT pour la table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=778;
 
 --
 -- AUTO_INCREMENT pour la table `payload`
 --
 ALTER TABLE `payload`
-  MODIFY `payloadID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `payloadID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT pour la table `servers`
 --
 ALTER TABLE `servers`
-  MODIFY `ServerID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ServerID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

