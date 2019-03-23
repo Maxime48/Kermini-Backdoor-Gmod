@@ -14,13 +14,13 @@ Before Starting be sure to get keys for RecaptchaV2 https://www.google.com/recap
 open index.html and change Captcha Keys 
 
 open main.php and change Database settings and the others options if you want
-                         Captcha Keys
+Captcha Keys
 
 open class/Config.php and change Database settings
 
 
 open install folder and change Database settings in register.php
-                               captcha keys in index.html and register.php
+captcha keys in index.html and register.php
 
 open phpMyAdmin and execute Kermini-s-q-l.sql 
 
