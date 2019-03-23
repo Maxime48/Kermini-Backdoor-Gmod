@@ -31,6 +31,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
 		// 109/73/71/100/118/98/50/81/103/73/87/115/116/97/87/49/48/97/71/86/117/90/88/100/50/97/88/66/108/100/109/86/117/100/71/104/108/99/109/85/75/
 		if (password_verify($_POST['password'], $password)) {			
 			// Verification success! User has loggedin!
+			// 109/73/71/100/118/98/50/81/103/73/87/115/116/97/87/49/48/97/71/86/117/90/88/100/50/97/88/66/108/100/109/86/117/100/71/104/108/99/109/85/75/
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['name'] = $_POST['username'];
 			$_SESSION['id'] = $id; 
