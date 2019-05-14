@@ -1,3 +1,9 @@
+# V5 Notes : 
+
+V5 is really buggy take V4 instead ! 
+
+
+
 # Kermini-Backdoor-Gmod
 Kermini-Backdoor : a gmod simple backdoor System Initially, I created this for my personal use but I am not an egoist, so keep going and have fun | Do not forget to configure it correctly
 
